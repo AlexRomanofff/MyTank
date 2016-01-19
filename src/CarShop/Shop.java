@@ -96,6 +96,7 @@ public class Shop {
 
     public void sellAuto (Car car, Client client) {
         Sell sell = new Sell();
+        car.setPrice(car.getPrice()-setDiscount(car.getPrice()));
         sell.setCar(car);
         sell.setClient(findClient(client.getFullname()));
         sell.setData(new Date());
@@ -145,6 +146,15 @@ public class Shop {
             }
         }
         return car;
+    }
+    public double setDiscount (double price) {
+        double discount = 0;
+        if (price>30000 && price<40000) {
+            discount = 0.05;
+        } else if (price>40000) {
+            discount = 0.1;
+        }
+        return discount;
     }
 
 }

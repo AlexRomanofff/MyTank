@@ -33,6 +33,7 @@ public class Demo {
         shop.sellAuto(car, client);
 
 
+
             new TableTransaction(shop);
     }
 }
