@@ -15,18 +15,30 @@ public class CarShopTest {
         shop = new Shop();
     }
     @Test
-    public void checkDiscount () {
+    public void checkDiscount5percent () {
         double price = 35000;
-        double price1 = 50000;
-        double price2 = 20000;
         double expectedDiscount = 0.05;
-        double expectedDiscount1 = 0.1;
-        double expectedDiscount2 = 0.0;
 
         shop.setDiscount(price);
         assertEquals(expectedDiscount, shop.setDiscount(price), 0);
-        assertEquals(expectedDiscount1, shop.setDiscount(price1), 0);
-        assertEquals(expectedDiscount2, shop.setDiscount(price2), 0);
+
+    }
+    @Test
+    public void checkDiscount10persent () {
+        double price = 50000;
+        double expectedDiscount = 0.1;
+
+        shop.setDiscount(price);
+        assertEquals(expectedDiscount, shop.setDiscount(price), 0);
+
+    }
+    @Test
+    public void checkDiscount0persent () {
+        double price = 20000;
+        double expectedDiscount = 0.0;
+
+        shop.setDiscount(price);
+        assertEquals(expectedDiscount, shop.setDiscount(price), 0);
 
     }
 
