@@ -2,6 +2,7 @@ package CarShop;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -12,7 +13,7 @@ public class ShopWindow extends JPanel {
 
     private Shop shop;
     private int indexProduct = 0;
-    JFrame frame;
+    private JFrame frame;
 
     public ShopWindow(Shop shop) {
         this.shop = shop;
@@ -35,6 +36,7 @@ public class ShopWindow extends JPanel {
         JLabel lCustomer = new JLabel("Customer");
 
         JTextField tClient = new JTextField();
+
         tClient.setColumns(15);
         pan.add(lCustomer, new GridBagConstraints(0, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
         pan.add(tClient, new GridBagConstraints(1, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, 0, new Insets(0,0,0,0), 0,0));
@@ -52,12 +54,14 @@ public class ShopWindow extends JPanel {
             JRadioButton rb = new JRadioButton(car.getManufacturer().toString() + " "+car.getModel().toString());
             rb.setActionCommand(String.valueOf(i));
             rb.addActionListener(rbListener);
+
             if (i==0) {
                 rb.setSelected(true);
             }
 
             bg.add(rb);
             radioPanel.add(rb);
+
         }
 
         pan.add(lProduct, new GridBagConstraints(0, 2, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
@@ -69,21 +73,40 @@ public class ShopWindow extends JPanel {
 //        JFormattedTextField tfQuantity = new JFormattedTextField(nf);
 //        tfQuantity.setColumns(2);
 //        tfQuantity.setValue(1);
-
-//        pan.add(lCount, new GridBagConstraints(0, 3, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
-//        pan.add(tfQuantity, new GridBagConstraints(1, 3, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+//
+//        pan.add(lCount, new GridBagConstraints(0, 6, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+//        pan.add(tfQuantity, new GridBagConstraints(1, 6, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
 
         JButton buy = new JButton("Buy");
-        pan.add(buy, new GridBagConstraints(1, 4, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+        pan.add(buy, new GridBagConstraints(3, 5, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+
+        JLabel lPrice = new JLabel("Price");
+        pan.add(lPrice, new GridBagConstraints(0, 4, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+
+        double price = shop.getCars().get(indexProduct).getPrice();
+        JLabel lPriceValue = new JLabel(Double.toString(price));
+        lPriceValue.setText(Double.toString(price));
+
+        pan.add(lPriceValue, new GridBagConstraints(1, 4, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+
         buy.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name  = tClient.getText();
                 Client client =  shop.findClient(name);
-                Car c = shop.getCars().get(indexProduct);
-                shop.sellAuto(c, client);
-                new TableTransaction(shop);
-                frame.dispose();
+                if (shop.isNewClient()) {
+                   new NewClientUI(name);
+                } else {
+                    Car c = shop.getCars().get(indexProduct);
+                    if (c.getCount()==0) {
+                        new CarIsNotAvailableUI();
+                        return;
+                    }
+                    shop.sellAuto(c, client);
+                    new TableTransaction(shop);
+                    frame.dispose();
+                }
+
 
             }
         });
@@ -94,6 +117,8 @@ public class ShopWindow extends JPanel {
            @Override
            public void actionPerformed(ActionEvent e) {
                indexProduct = Integer.parseInt(e.getActionCommand());
+
+
            }
        }
 

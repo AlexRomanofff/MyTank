@@ -2,28 +2,28 @@ package CarShop;
 
 public class Client {
 
-    private String fullname;
-    private String adress;
+    private String fullName;
+    private String address;
     private String phoneNumber;
 
     public Client () {
 
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getAdress() {
-        return adress;
+        return address;
     }
 
     public void setAdress(String adress) {
-        this.adress = adress;
+        this.address = adress;
     }
 
     public String getPhoneNumber() {

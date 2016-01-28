@@ -1,15 +1,22 @@
 package CarShop;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
 
 public class Shop {
 
     private ArrayList<Car> cars;
+    private ArrayList<Client> clients;
+    private ArrayList<Sell>  sales;
+    private boolean isNewClient;
 
-    private Client [] clients = new Client[20];
-    private ArrayList<Sell>  sales = new ArrayList<>();
+    public boolean isNewClient() {
+        return isNewClient;
+    }
+
+    public void setNewClient(boolean newClient) {
+        isNewClient = newClient;
+    }
 
     public ArrayList<Car> getCars() {
         return cars;
@@ -19,11 +26,11 @@ public class Shop {
         this.cars = cars;
     }
 
-    public Client[] getClients() {
+    public ArrayList<Client> getClients() {
         return clients;
     }
 
-    public void setClients(Client[] clients) {
+    public void setClients(ArrayList<Client> clients) {
         this.clients = clients;
     }
 
@@ -38,6 +45,7 @@ public class Shop {
     public Shop () {
        cars = new ArrayList<>();
        sales = new ArrayList<>();
+       clients = new ArrayList<>();
        createStorage();
        createClientBase();
    }
@@ -64,7 +72,7 @@ public class Shop {
 
        addToStorage(initCar(Manufacturer.TOYOTA, "Camry", 34000, EngineKind.BENZINE, Color.BLACK),5);
        addToStorage(initCar(Manufacturer.TOYOTA, "Corolla", 25000, EngineKind.DIESEL, Color.WHITE),5);
-       addToStorage(initCar(Manufacturer.TOYOTA, "Land Cruiser", 50000, EngineKind.BENZINE, Color.BLACK),2);
+       addToStorage(initCar(Manufacturer.TOYOTA, "Land Cruiser", 50000, EngineKind.BENZINE, Color.BLACK),0);
        addToStorage(initCar(Manufacturer.TOYOTA, "Prius", 38000, EngineKind.HYBRID,Color.GREY),5);
        addToStorage(initCar(Manufacturer.KIA, "Sportage", 38000, EngineKind.DIESEL,Color.BROWN),5);
        addToStorage(initCar(Manufacturer.KIA, "Cerato", 27000, EngineKind.BENZINE,Color.BLUE), 3);
@@ -74,19 +82,14 @@ public class Shop {
     }
     public Client initClient (String fullName, String adress, String phoneNumber) {
         Client client = new Client();
-        client.setFullname(fullName);
+        client.setFullName(fullName);
         client.setAdress(adress);
         client.setPhoneNumber(phoneNumber);
         return  client;
     }
 
     public void addToClientBase (Client client) {
-        for (int i=0; i<clients.length; i++) {
-            if (clients[i]==null) {
-                clients[i]=client;
-                return;
-            }
-        }
+        clients.add(client);
     }
     public void createClientBase () {
         addToClientBase(initClient("Ivanov Illya", "Kyiv, Nagornaya str.34", "493 34 23"));
@@ -96,9 +99,9 @@ public class Shop {
 
     public void sellAuto (Car car, Client client) {
         Sell sell = new Sell();
-        car.setPrice(car.getPrice()-setDiscount(car.getPrice()));
+        car.setPrice(car.getPrice()-setDiscount(car.getPrice())*car.getPrice());
         sell.setCar(car);
-        sell.setClient(findClient(client.getFullname()));
+        sell.setClient(findClient(client.getFullName()));
         sell.setData(new Date());
         addNewSell(sell);
         changeCountAuto(car, -1);
@@ -122,17 +125,18 @@ public class Shop {
     public Client findClient(String fullName) {
         Client client = new Client();
         int availabilityClient = 0;
-        for (int i=0; i<clients.length; i++) {
-            if (clients[i]!=null) {
-                if (clients[i].getFullname().equals(fullName)) {
-                    client = clients[i];
-                    availabilityClient = 1;
-                    break;
+        for (Client c : clients) {
+
+                if (c.getFullName().equals(fullName)) {
+                    client = c;
+                    setNewClient(false);
+                    return client;
                 }
-            }
         }
         if (availabilityClient==0) {
-            client.setFullname(fullName);
+            setNewClient(true);
+            client.setFullName(fullName);
+
             addToClientBase(client);
         } return client;
     }

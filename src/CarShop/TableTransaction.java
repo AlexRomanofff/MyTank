@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -48,8 +47,8 @@ public class TableTransaction extends JPanel {
         JPanel pan = new JPanel();
         pan.setLayout(new GridLayout(1,0));
 
-        Object [] dataColumns = {"TID", "Data","Customer", "Car" };
-        Object [][] data = new Object[10][4];
+        Object [] dataColumns = {"TID", "Data","Customer", "Car", "Price"};
+        Object [][] data = new Object[10][5];
 
         fillTable(data);
         JTable table = new JTable(data, dataColumns);
@@ -76,8 +75,9 @@ public class TableTransaction extends JPanel {
 
                 data[i][0] = i+1;
                 data[i][1] = sdf.format(s.getData());
-                data[i][2] = s.getClient().getFullname();
+                data[i][2] = s.getClient().getFullName();
                 data[i][3] = s.getCar().getManufacturer() + " " + s.getCar().getModel();
+                data[i][4] = s.getCar().getPrice()+"$";
                 i++;
 
         }

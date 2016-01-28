@@ -69,7 +69,7 @@ public class Reports {
                         totalProfit = totalProfit+sells[i].getCar().getPrice();
 
                         System.out.printf( "%-20s%-20s%-8s%-15s%,8.1f%s%n", sells[i].getData(),
-                                sells[i].getClient().getFullname(),sells[i].getCar().getManufacturer(),
+                                sells[i].getClient().getFullName(),sells[i].getCar().getManufacturer(),
                                 sells[i].getCar().getModel(), sells[i].getCar().getPrice(),"$");
 
                     }

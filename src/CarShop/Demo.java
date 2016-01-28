@@ -8,9 +8,9 @@ public class Demo {
 
     public static void main(String[] args) throws Exception {
 
-        SplashScreen splash = SplashScreen.getSplashScreen();
-        Thread.sleep(5000);
-        splash.close();
+//        SplashScreen splash = SplashScreen.getSplashScreen();
+//        Thread.sleep(5000);
+//        splash.close();
               Car car;
         Shop shop = new Shop();
         Reports reports = new Reports();
@@ -22,18 +22,19 @@ public class Demo {
         car1.setPrice(33000);
         shop.addToStorage(car1,5);
         car = shop.findCar(Manufacturer.TOYOTA, "Corolla");
-        shop.sellAuto(car, shop.getClients()[0]);
+        shop.sellAuto(car, shop.getClients().get(0));
         Client client = new Client();
-        client.setFullname("Holovko Olexandr");
+        client.setFullName("Holovko Olexandr");
         client.setAdress("Kyiv, Shevchenka str.22, f.112");
         client.setPhoneNumber("234 34 34");
         car = shop.findCar(Manufacturer.KIA, "Rio");
-        shop.sellAuto(car, shop.getClients()[1]);
+        shop.sellAuto(car, shop.getClients().get(1));
         car = shop.findCar(Manufacturer.NISSAN,"Leaf");
         shop.sellAuto(car, client);
 
 
-
+//                     new CarIsNotAvailableUI();
             new TableTransaction(shop);
+//            new NewClientUI("privet");
     }
 }
