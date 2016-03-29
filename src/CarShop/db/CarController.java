@@ -126,6 +126,7 @@ public class CarController implements Controller {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
     }
     @Override
     public void changeCarCount (Car car, int count) {
@@ -146,8 +147,12 @@ public class CarController implements Controller {
 
     public void addSell (Sell sell) {
         try {
-            String sql = "insert into sell (fk_carID, fk_clientId, date) values (?, ?, ?)";
-            PreparedStatement stat = con.prepareStatement(sql);
+            Connection connect = DriverManager.getConnection(url,userName,password);
+//            String sql1 = "SET foreign_key_checks = 0";
+//            Statement stat1 = connect.createStatement();
+//            stat1.executeUpdate(sql1);
+            String sql = "insert into sell ( fk_carID, fk_clientId, date) values (?, ?, ?)";
+            PreparedStatement stat = connect.prepareStatement(sql);
             stat.setInt(1, sell.getCar().getCarID());
             stat.setInt(2, sell.getClient().getId());
             stat.setDate(3, sell.getData());
@@ -164,7 +169,7 @@ public class CarController implements Controller {
         List<Client> clients = uploadClients();
         List<Sell> sells = new ArrayList<>();
         try {
-            con = DriverManager.getConnection(url, userName, password);
+
             String sql = "select * from sell";
             Statement statement = con.createStatement();
             ResultSet result =  statement.executeQuery(sql);

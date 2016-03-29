@@ -71,9 +71,10 @@ public class NewClientUI extends JPanel {
                 c.setPhoneNumber(phoneNumber.getText());
 
                 shop.addToClientBase(c);
-
+                shop.createClientBase();
 
                 new ShopWindow(shop);
+
                 frame.dispose();
             }
         });

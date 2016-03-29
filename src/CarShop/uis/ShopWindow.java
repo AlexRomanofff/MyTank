@@ -3,6 +3,7 @@ package CarShop.uis;
 import CarShop.model.Car;
 import CarShop.model.Client;
 import CarShop.Shop;
+import CarShop.model.EngineKind;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,49 +49,68 @@ public class ShopWindow extends JPanel {
 //        tClient.setColumns(15);
         tClient.setBackground(Color.WHITE);
 
-        pan.add(lCustomer, new GridBagConstraints(0, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,20,15), 0,0));
-        pan.add(tClient, new GridBagConstraints(1, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, 0, new Insets(0,0,20,0), 0,0));
+        pan.add(lCustomer, new GridBagConstraints(0, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,15,15), 0,0));
+        pan.add(tClient, new GridBagConstraints(1, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, 0, new Insets(0,0,15,0), 0,0));
 
-        ButtonGroup bg = new ButtonGroup();
+        JLabel model = new JLabel("Model");
+        JLabel engineType = new JLabel("Engine Type");
+        model.setFont(new Font(Font.SERIF, Font.BOLD, 15));
+        engineType.setFont(new Font(Font.SERIF, Font.BOLD, 15));
 
-        JPanel radioPanel = new JPanel();
-        JLabel lProduct = new JLabel("Cars");
+        pan.add(model, new GridBagConstraints(1, 1, 1, 1, 0, 0,GridBagConstraints.LINE_START, 0, new Insets(0,0,0,0), 0,0));
+        pan.add(engineType, new GridBagConstraints(2, 1, 1, 1, 0, 0,GridBagConstraints.LINE_START, 0, new Insets(0,25,0,0), 0,0));
+
+
+//        ButtonGroup bg = new ButtonGroup();
+
+//        JPanel radioPanel = new JPanel();
+        JLabel lProduct = new JLabel("Car");
         lProduct.setFont(labelFont);
-        radioPanel.setLayout(new GridLayout(3, 0));
 
-        ActionListener rbListener = new RBListener();
-        for (int i=0; i<shop.getCars().size(); i++) {
-            Car car = shop.getCars().get(i);
+        JComboBox<String> cars = new JComboBox<>();
 
-            JRadioButton rb = new JRadioButton(car.getManufacturer().toString() + " "+car.getModel().toString());
-            rb.setActionCommand(String.valueOf(i));
-            rb.addActionListener(rbListener);
+        fillFieldCars(cars);
 
-            if (i==0) {
-                rb.setSelected(true);
-            }
+//        radioPanel.setLayout(new GridLayout(3, 0));
 
-            bg.add(rb);
-            radioPanel.add(rb);
+//        ActionListener rbListener = new RBListener();
+//        for (int i=0; i<shop.getCars().size(); i++) {
+//            Car car = shop.getCars().get(i);
+//
+//            JRadioButton rb = new JRadioButton(car.getManufacturer().toString() + " "+car.getModel().toString());
+//            rb.setActionCommand(String.valueOf(i));
+//            rb.addActionListener(rbListener);
+//
+//            if (i==0) {
+//                rb.setSelected(true);
+//            }
+//
+//            bg.add(rb);
+//            radioPanel.add(rb);
+//
+//        }
+//        cars.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        });
+        JComboBox<EngineKind> engine = new JComboBox<>();
+            engine.addItem(shop.getCars().get(indexProduct).getEngineKind());
 
-        }
 
         pan.add(lProduct, new GridBagConstraints(0, 2, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
-        pan.add(radioPanel, new GridBagConstraints(1, 2, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+        pan.add(cars, new GridBagConstraints(1, 2, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+        pan.add(engine, new GridBagConstraints(2, 2, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,25,0,0), 0,0));
 
-
-//        JLabel lCount = new JLabel("Quantity");
-//        NumberFormat nf = NumberFormat.getNumberInstance();
-//        JFormattedTextField tfQuantity = new JFormattedTextField(nf);
-//        tfQuantity.setColumns(2);
-//        tfQuantity.setValue(1);
-//
-//        pan.add(lCount, new GridBagConstraints(0, 6, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
-//        pan.add(tfQuantity, new GridBagConstraints(1, 6, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
 
         JButton buy = new JButton("Buy");
         buy.setFont(labelFont);
-        pan.add(buy, new GridBagConstraints(3, 5, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+        pan.add(buy, new GridBagConstraints(3, 5, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(30,0,0,0), 0,0));
+
+        JButton returns = new JButton("Cancel");
+        returns.setFont(labelFont);
+        pan.add(returns, new GridBagConstraints(0, 5, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(30,0,0,0), 0,0));
 
         JLabel lPrice = new JLabel("Price");
         lPrice.setFont(labelFont);
@@ -104,14 +124,39 @@ public class ShopWindow extends JPanel {
 
         pan.add(lPriceValue, new GridBagConstraints(1, 4, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(20,0,0,0), 0,0));
 
-        pan.addMouseListener(new MouseAdapter() {
+        cars.addActionListener(new ActionListener() {
             @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-                lPriceValue.setText(Double.toString(shop.getCars().get(indexProduct).getPrice())+ " $");
+            public void actionPerformed(ActionEvent e) {
+
+                String carName = cars.getItemAt(cars.getSelectedIndex());
+                engine.removeAllItems();
+
+                for (Car car : shop.getCars()) {
+
+                    if ((car.getManufacturer()+" "+car.getModel()).equals(carName)) {
+                        EngineKind en = car.getEngineKind();
+                        engine.addItem(en);
+                    }
+                }
             }
+        });
+
+        engine.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String carName = cars.getItemAt(cars.getSelectedIndex());
+                for (Car car : shop.getCars()) {
+                    if ((car.getManufacturer()+" "+car.getModel()).equals(carName)&&
+                            car.getEngineKind().equals(engine.getItemAt(engine.getSelectedIndex()))) {
+
+                        double price = car.getPrice();
+                        lPriceValue.setText(Double.toString(price)+" $");
+                        return;
+                    }
+                }
 
 
+            }
         });
 
         buy.addActionListener( new ActionListener() {
@@ -121,26 +166,60 @@ public class ShopWindow extends JPanel {
                 System.out.println(name);
                 Client client =  shop.findClient(name);
 //
+
                 if (client==null) {
                    new NewClientUI(shop);
                     frame.dispose();
                 } else {
-                    Car c = shop.getCars().get(indexProduct);
-                    if (c.getCount() == 0) {
+                   Car car = getCarFromStorage(cars, engine);
+
+                    if (car.getCount() == 0) {
                         new CarIsNotAvailableUI();
                         return;
                     }
-                    shop.sellAuto(c, client);
+                    shop.sellAuto(car, client);
                     new TableTransaction(shop);
                     frame.dispose();
                 }
             }
         });
-
+        returns.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new TableTransaction(shop);
+                frame.dispose();
+            }
+        });
 
         return pan;
     }
-       private class RBListener implements ActionListener {
+
+    private Car getCarFromStorage(JComboBox<String> cars, JComboBox<EngineKind> engine) {
+        String carName = cars.getItemAt(cars.getSelectedIndex());
+        Car car=null;
+        for (Car carr:shop.getCars()) {
+            if ((carr.getManufacturer()+" "+carr.getModel()).equals(carName)&&
+                    carr.getEngineKind().equals(engine.getItemAt(engine.getSelectedIndex()))) {
+                car = carr;
+            }
+        }
+        return car;
+    }
+
+    private void fillFieldCars(JComboBox<String> cars) {
+        String previousCar = null;
+
+        for (Car car : shop.getCars()) {
+            String carName = car.getManufacturer()+" "+car.getModel();
+            if (!carName.equals(previousCar)) {
+                cars.addItem(carName);
+            }
+            previousCar = carName;
+
+        }
+    }
+
+    private class RBListener implements ActionListener {
            @Override
            public void actionPerformed(ActionEvent e) {
 

@@ -49,8 +49,9 @@ public class TableTransaction extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                frame.dispose();
+               shop.createClientBase();
+               shop.createStorage();
                new ShopWindow(shop);
-
             }
         });
 

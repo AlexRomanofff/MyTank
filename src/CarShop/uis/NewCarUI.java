@@ -95,7 +95,7 @@ public class NewCarUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Car car = shop.initCar(producerBox.getItemAt(producerBox.getSelectedIndex()), modelText.getText(), Double.parseDouble(priceText.getText()),
-                       engineBox.getItemAt(engineBox.getSelectedIndex()), CarShop.Color.BLUE);
+                       engineBox.getItemAt(engineBox.getSelectedIndex()), Integer.parseInt(count.getText()), CarShop.Color.BLUE);
                 shop.addNewCar(car);
                 frame.dispose();
             }

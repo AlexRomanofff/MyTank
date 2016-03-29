@@ -12,17 +12,10 @@ public class Shop {
     private List<Car> cars;
     private List<Client> clients;
     private List<Sell>  sales;
-    private boolean isNewClient;
+
     private Controller controller = new CarController();
 
 
-    public boolean isNewClient() {
-        return isNewClient;
-    }
-
-    public void setNewClient(boolean newClient) {
-        isNewClient = newClient;
-    }
 
     public List<Car> getCars() {
         return cars;
@@ -38,23 +31,26 @@ public class Shop {
         return sales;
     }
 
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
 
     public Shop () {
        cars = new ArrayList<>();
        sales = new ArrayList<>();
        clients = new ArrayList<>();
-       createStorage();
        createClientBase();
        controller.uploadSells();
 
    }
 
-    public Car initCar (Manufacturer man, String model, double price, EngineKind ek, Color color) {
+    public Car initCar (Manufacturer man, String model, double price, EngineKind ek, int count, Color color) {
         Car car = new Car();
         car.setManufacturer(man);
         car.setModel(model);
         car.setPrice(price);
         car.setEngineKind(ek);
+        car.setCount(count);
         car.setColor(color);
     return car;
     }
@@ -70,11 +66,15 @@ public class Shop {
     public void createStorage () {
 
        cars = controller.uploadCars();
-       System.out.println(cars.get(0).getPrice());
-
-
+       cars.sort(new Comparator<Car>() {
+            @Override
+            public int compare(Car o1, Car o2) {
+               return (o1.getManufacturer()+o1.getModel()).compareToIgnoreCase(o2.getManufacturer()+o2.getModel());
+            }
+        });
 
     }
+
     public Client initClient (String fullName, String adress, String phoneNumber) {
         Client client = new Client();
         client.setFullName(fullName);
