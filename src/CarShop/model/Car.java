@@ -1,15 +1,26 @@
-package CarShop;
+package CarShop.model;
+
+import CarShop.Color;
 
 public class Car {
     private Manufacturer manufacturer;
     private String model;
     private double price;
-    private EngineKind  engineKind;
+    private EngineKind engineKind;
     private int count;
     private Color color;
+    private int carID;
 
     public Car () {
 
+    }
+
+    public void setCarID(int carID) {
+        this.carID = carID;
+    }
+
+    public int getCarID() {
+        return carID;
     }
 
     public EngineKind getEngineKind() {

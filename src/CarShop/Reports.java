@@ -1,6 +1,10 @@
 package CarShop;
 
 
+import CarShop.model.Car;
+import CarShop.model.EngineKind;
+import CarShop.model.Sell;
+
 import java.util.ArrayList;
 
 public class Reports {

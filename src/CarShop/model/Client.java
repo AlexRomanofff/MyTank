@@ -1,13 +1,22 @@
-package CarShop;
+package CarShop.model;
 
 public class Client {
 
     private String fullName;
     private String address;
     private String phoneNumber;
+    private int id;
 
     public Client () {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFullName() {

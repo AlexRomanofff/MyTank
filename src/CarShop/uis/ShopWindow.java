@@ -1,12 +1,16 @@
-package CarShop;
+package CarShop.uis;
+
+import CarShop.model.Car;
+import CarShop.model.Client;
+import CarShop.Shop;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
-import java.util.Date;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class ShopWindow extends JPanel {
@@ -32,19 +36,26 @@ public class ShopWindow extends JPanel {
     private JPanel createShopPanel() {
         JPanel pan = new JPanel();
         pan.setLayout(new GridBagLayout());
-
+        Font labelFont = new Font(Font.SERIF, Font.BOLD, 20);
         JLabel lCustomer = new JLabel("Customer");
+        lCustomer.setFont(labelFont);
+        JComboBox<String> tClient = new JComboBox<>();
 
-        JTextField tClient = new JTextField();
+            tClient.addItem("(New Client)");
+        for (Client client: shop.getClients()) {
+            tClient.addItem(client.getFullName());
+        }
+//        tClient.setColumns(15);
+        tClient.setBackground(Color.WHITE);
 
-        tClient.setColumns(15);
-        pan.add(lCustomer, new GridBagConstraints(0, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
-        pan.add(tClient, new GridBagConstraints(1, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, 0, new Insets(0,0,0,0), 0,0));
+        pan.add(lCustomer, new GridBagConstraints(0, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,20,15), 0,0));
+        pan.add(tClient, new GridBagConstraints(1, 0, 1, 1, 0, 0,GridBagConstraints.LINE_START, 0, new Insets(0,0,20,0), 0,0));
 
         ButtonGroup bg = new ButtonGroup();
 
         JPanel radioPanel = new JPanel();
         JLabel lProduct = new JLabel("Cars");
+        lProduct.setFont(labelFont);
         radioPanel.setLayout(new GridLayout(3, 0));
 
         ActionListener rbListener = new RBListener();
@@ -78,27 +89,44 @@ public class ShopWindow extends JPanel {
 //        pan.add(tfQuantity, new GridBagConstraints(1, 6, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
 
         JButton buy = new JButton("Buy");
+        buy.setFont(labelFont);
         pan.add(buy, new GridBagConstraints(3, 5, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
 
         JLabel lPrice = new JLabel("Price");
-        pan.add(lPrice, new GridBagConstraints(0, 4, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+        lPrice.setFont(labelFont);
+        pan.add(lPrice, new GridBagConstraints(0, 4, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(20,0,0,0), 0,0));
 
         double price = shop.getCars().get(indexProduct).getPrice();
-        JLabel lPriceValue = new JLabel(Double.toString(price));
-        lPriceValue.setText(Double.toString(price));
+        JTextField lPriceValue = new JTextField();
+        lPriceValue.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+        lPriceValue.setText(Double.toString(price)+" $");
+        lPriceValue.setEditable(false);
 
-        pan.add(lPriceValue, new GridBagConstraints(1, 4, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+        pan.add(lPriceValue, new GridBagConstraints(1, 4, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(20,0,0,0), 0,0));
+
+        pan.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                lPriceValue.setText(Double.toString(shop.getCars().get(indexProduct).getPrice())+ " $");
+            }
+
+
+        });
 
         buy.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name  = tClient.getText();
+                String name  = tClient.getSelectedItem().toString();
+                System.out.println(name);
                 Client client =  shop.findClient(name);
-                if (shop.isNewClient()) {
-                   new NewClientUI(name);
+//
+                if (client==null) {
+                   new NewClientUI(shop);
+                    frame.dispose();
                 } else {
                     Car c = shop.getCars().get(indexProduct);
-                    if (c.getCount()==0) {
+                    if (c.getCount() == 0) {
                         new CarIsNotAvailableUI();
                         return;
                     }
@@ -106,17 +134,18 @@ public class ShopWindow extends JPanel {
                     new TableTransaction(shop);
                     frame.dispose();
                 }
-
-
             }
         });
+
 
         return pan;
     }
        private class RBListener implements ActionListener {
            @Override
            public void actionPerformed(ActionEvent e) {
+
                indexProduct = Integer.parseInt(e.getActionCommand());
+
 
 
            }

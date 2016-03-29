@@ -1,4 +1,4 @@
-package CarShop;
+package CarShop.model;
 
 
 public enum EngineKind {

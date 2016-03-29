@@ -1,7 +1,4 @@
-package CarShop;
-
-
-
+package CarShop.uis;
 
 import javax.swing.*;
 import java.awt.*;

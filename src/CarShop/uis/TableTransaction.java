@@ -1,4 +1,7 @@
-package CarShop;
+package CarShop.uis;
+
+import CarShop.model.Sell;
+import CarShop.Shop;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,13 +26,24 @@ public class TableTransaction extends JPanel {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("      File      ");
+        JMenu menu1 = new JMenu("      Edit      ");
+
+
 
         frame.setJMenuBar(menuBar);
         menuBar.add(menu);
+        menuBar.add(menu1);
+
+        JMenuItem addClientItem = new JMenuItem("Add new Customer");
+        JMenuItem addNewCar = new JMenuItem("Add new Car");
+        menu1.add(addClientItem);
+        menu1.add(addNewCar);
+
 
         JMenuItem buyMenuItem = new JMenuItem("Buy Car");
         buyMenuItem.setPreferredSize(new Dimension (100,20));
         menu.add(buyMenuItem);
+
 
         buyMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -37,6 +51,20 @@ public class TableTransaction extends JPanel {
                frame.dispose();
                new ShopWindow(shop);
 
+            }
+        });
+
+        addClientItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NewClientUI(shop);
+            }
+        });
+
+        addNewCar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                 new NewCarUI(shop);
             }
         });
 

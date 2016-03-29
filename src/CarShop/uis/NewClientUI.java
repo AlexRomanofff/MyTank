@@ -1,22 +1,27 @@
-package CarShop;
+package CarShop.uis;
 
+
+import CarShop.model.Client;
+import CarShop.Shop;
 
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class NewClientUI extends JPanel {
     private JFrame frame;
-    private String clientName;
+    Shop shop;
+    JFormattedTextField phoneNumber;
 
-    public NewClientUI (String clientName) {
-        this.clientName = clientName;
-        this.frame = new JFrame("New Client");
+    public NewClientUI (Shop shop) {
+        this.shop = shop;
+        frame = new JFrame("New Client");
 
         frame.setMinimumSize(new Dimension(500, 200));
         frame.setLocation(300,100);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         frame.getContentPane().add(createNewClient());
 
@@ -35,7 +40,7 @@ public class NewClientUI extends JPanel {
         JLabel lFullName = new JLabel("Enter Full Name");
         pan.add(lFullName, new GridBagConstraints(0, 1, 1, 1,0, 0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
 
-        JTextField tFullName = new JTextField(clientName);
+        JTextField tFullName = new JTextField();
         tFullName.setColumns(30);
         pan.add(tFullName, new GridBagConstraints(1, 1, 1, 1,0, 0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,0,10,0), 0,0));
 
@@ -50,9 +55,9 @@ public class NewClientUI extends JPanel {
         JLabel lPhone = new JLabel("Enter Phone Number");
         pan.add(lPhone, new GridBagConstraints(0, 3, 1, 1,0, 0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,0,0,0), 10,0));
 
-        JTextField tPhone = new JTextField("(+380)");
-        tPhone.setColumns(10);
-        pan.add(tPhone, new GridBagConstraints(1, 3, 1, 1,0, 0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,0,0,220), 0,0));
+        setFormatForPhoneNumber();
+        phoneNumber.setColumns(10);
+        pan.add(phoneNumber, new GridBagConstraints(1, 3, 1, 1,0, 0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,0,0,220), 0,0));
 
         JButton addCllient = new JButton("Add");
         pan.add(addCllient, new GridBagConstraints(1, 4,1,1,0,0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,250,0,0), 0,0));
@@ -63,17 +68,27 @@ public class NewClientUI extends JPanel {
                 Client c = new Client();
                 c.setFullName(tFullName.getText());
                 c.setAdress(tAddress.getText());
-                c.setPhoneNumber(tPhone.getText());
-                Shop shop = new Shop();
+                c.setPhoneNumber(phoneNumber.getText());
+
                 shop.addToClientBase(c);
-                shop.setNewClient(false);
+
+
+                new ShopWindow(shop);
                 frame.dispose();
             }
         });
 
-
         return pan;
     }
+    private void setFormatForPhoneNumber () {
+        MaskFormatter formatter1 = null;
+        try {
+            formatter1 = new MaskFormatter("(+380##)###-##-##");
+        } catch (java.text.ParseException exc) {
+            exc.printStackTrace();
+        }
+        phoneNumber = new JFormattedTextField(formatter1);
 
+    }
 
 }
