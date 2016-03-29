@@ -52,7 +52,6 @@ public class CarController implements Controller {
         }
 
         return cars;
-
     }
 
     @Override
@@ -148,9 +147,7 @@ public class CarController implements Controller {
     public void addSell (Sell sell) {
         try {
             Connection connect = DriverManager.getConnection(url,userName,password);
-//            String sql1 = "SET foreign_key_checks = 0";
-//            Statement stat1 = connect.createStatement();
-//            stat1.executeUpdate(sql1);
+
             String sql = "insert into sell ( fk_carID, fk_clientId, date) values (?, ?, ?)";
             PreparedStatement stat = connect.prepareStatement(sql);
             stat.setInt(1, sell.getCar().getCarID());
@@ -174,12 +171,12 @@ public class CarController implements Controller {
             Statement statement = con.createStatement();
             ResultSet result =  statement.executeQuery(sql);
 
-
             while (result.next()) {
                 Sell sell = new Sell();
                 sell.setCar(getCarByID(cars, result));
                 sell.setClient(getClientByID(clients, result));
                 sell.setData(result.getDate(4));
+                sells.add(sell);
             }
 
         } catch (Exception ex) {

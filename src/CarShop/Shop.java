@@ -40,7 +40,8 @@ public class Shop {
        sales = new ArrayList<>();
        clients = new ArrayList<>();
        createClientBase();
-       controller.uploadSells();
+//       sales = controller.uploadSells();
+        System.out.println(sales.size());
 
    }
 
