@@ -1,9 +1,5 @@
 package CarShop.model;
 
-
-import CarShop.model.Car;
-import CarShop.model.Client;
-
 import java.sql.Date;
 
 public class Sell {

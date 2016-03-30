@@ -10,26 +10,30 @@ import java.util.List;
 
 public class CarController implements Controller {
 
-    String url = "jdbc:mysql://localhost:3306/shop?useSSL=false";
-    String userName = "root";
-    String password = "Mashar2004";
+    private final String URL = "jdbc:mysql://localhost:3306/shop?useSSL=false";
+    private final String USER_NAME = "root";
+    private final String PASSWORD = "Mashar2004";
     Connection con=null;
 
     public CarController () {
+
+    }
+
+    private void openConnnection () {
         try {
-            con = DriverManager.getConnection(url, userName, password);
+            con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
     }
-
-
 
     @Override
     public List<Car> uploadCars() {
          List<Car> cars = new ArrayList<>();
-        try {
+        openConnnection();
 
+        try {
             Statement st = con.createStatement();
             String sql = "select * from car";
 
@@ -49,6 +53,8 @@ public class CarController implements Controller {
         }
         catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            closeConnection();
         }
 
         return cars;
@@ -57,6 +63,7 @@ public class CarController implements Controller {
     @Override
     public List<Client> uploadClients() {
         List<Client> clients = new ArrayList<>();
+        openConnnection();
         try {
 
             Statement st = con.createStatement();
@@ -76,6 +83,8 @@ public class CarController implements Controller {
         }
         catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            closeConnection();
         }
 
         return clients;
@@ -84,9 +93,8 @@ public class CarController implements Controller {
 
     @Override
     public void addCar(Car car) {
-
+         openConnnection();
         try {
-
             String sql = "insert into car (manufacturer, model, engine_kind, color, price, count) " +
                     "values (?,?,?,?,?,?)";
 
@@ -104,12 +112,14 @@ public class CarController implements Controller {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            closeConnection();
         }
     }
 
     @Override
     public void addClient(Client client) {
-
+        openConnnection();
         try {
             String sql = "insert into client (full_name, phone , address) " +
                     "values (?,?,?)";
@@ -125,10 +135,14 @@ public class CarController implements Controller {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        finally {
+            closeConnection();
+        }
 
     }
     @Override
     public void changeCarCount (Car car, int count) {
+        openConnnection();
         try {
 
             String sql = "update car set count=? where id=?";
@@ -139,17 +153,21 @@ public class CarController implements Controller {
             int result = statement.executeUpdate();
             System.out.println(result);
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
+        }
+        finally {
+            closeConnection();
         }
     }
 
     public void addSell (Sell sell) {
+        openConnnection();
         try {
-            Connection connect = DriverManager.getConnection(url,userName,password);
 
             String sql = "insert into sell ( fk_carID, fk_clientId, date) values (?, ?, ?)";
-            PreparedStatement stat = connect.prepareStatement(sql);
+            PreparedStatement stat = con.prepareStatement(sql);
             stat.setInt(1, sell.getCar().getCarID());
             stat.setInt(2, sell.getClient().getId());
             stat.setDate(3, sell.getData());
@@ -158,6 +176,9 @@ public class CarController implements Controller {
         catch (Exception ex) {
             ex.printStackTrace();
         }
+        finally {
+            closeConnection();
+        }
     }
 
     @Override
@@ -165,6 +186,7 @@ public class CarController implements Controller {
         List<Car> cars = uploadCars();
         List<Client> clients = uploadClients();
         List<Sell> sells = new ArrayList<>();
+        openConnnection();
         try {
 
             String sql = "select * from sell";
@@ -199,5 +221,14 @@ public class CarController implements Controller {
                return car;
             }
         } return null;
+    }
+    @Override
+    public void closeConnection () {
+        try {
+            con.close();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

@@ -5,11 +5,16 @@ import CarShop.model.Car;
 import CarShop.model.EngineKind;
 import CarShop.model.Sell;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Reports {
     Data date = new Data();
-
+    Shop shop;
+    public Reports (Shop shop) {
+        this.shop = shop;
+    }
 
     public void priceList (ArrayList<Car> cars) {
         System.out.println("----------Price List------------");
@@ -93,5 +98,12 @@ public class Reports {
                 }
             }
 
-
+        public List<Sell> selectSalesForData(Date data) {
+            List<Sell> dataSell = new ArrayList<>();
+            for (Sell sell: shop.getSales()) {
+                if (data==sell.getData()) {
+                    dataSell.add(sell);
+                }
+            }return dataSell;
+        }
 }

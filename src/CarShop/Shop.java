@@ -12,10 +12,13 @@ public class Shop {
     private List<Car> cars;
     private List<Client> clients;
     private List<Sell>  sales;
+    private Reports reports;
 
     private Controller controller = new CarController();
 
-
+    public Controller getController() {
+        return controller;
+    }
 
     public List<Car> getCars() {
         return cars;
@@ -40,8 +43,8 @@ public class Shop {
        sales = new ArrayList<>();
        clients = new ArrayList<>();
        createClientBase();
-//       sales = controller.uploadSells();
-        System.out.println(sales.size());
+       sales = controller.uploadSells();
+       System.out.println(sales.size());
 
    }
 
@@ -55,6 +58,8 @@ public class Shop {
         car.setColor(color);
     return car;
     }
+
+//    public List<Sell>
 
     public void addToStorage(Car car, int count) {
         if (changeCountAuto(car, count) == 1) {
@@ -151,6 +156,17 @@ public class Shop {
         controller.addCar(car);
     }
 
+    public List<Sell> getSalesByData (Date date) {
+        List<Sell> sells = new ArrayList<>();
+        System.out.println(date);
+        for (Sell sell: sales) {
+            System.out.println(sell.getData());
+            if (sell.getData().equals(date)) {
+                sells.add(sell);
+            }
+        }
+        return sells;
+    }
     public double setDiscount (double price) {
         double discount = 0;
         if (price>30000 && price<40000) {

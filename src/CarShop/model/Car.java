@@ -7,9 +7,8 @@ public class Car {
     private String model;
     private double price;
     private EngineKind engineKind;
-
     private int count;
-    private Color  color;
+    private Color color;
     private int carID;
 
     public Car () {

@@ -7,11 +7,20 @@ import CarShop.model.Sell;
 import java.util.List;
 
 public interface Controller {
+
     void addCar(Car car);
+
     void addClient (Client client);
+
     List<Car> uploadCars();
-    void changeCarCount(Car car, int count);
+
     List<Client> uploadClients();
+
     List<Sell> uploadSells();
+
+    void changeCarCount(Car car, int count);
+
     void addSell(Sell sell);
+
+    void closeConnection();
 }
