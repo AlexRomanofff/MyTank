@@ -12,7 +12,6 @@ public class Shop {
     private List<Client> clients;
     private List<Sell>  sales;
 
-
     private DB_Connection dbConnection = new DerbyConnection();
 
     public DB_Connection getDbConnection() {
