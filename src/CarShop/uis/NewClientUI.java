@@ -3,6 +3,7 @@ package CarShop.uis;
 
 import CarShop.model.Client;
 import CarShop.Shop;
+import sun.util.calendar.JulianCalendar;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -33,6 +34,7 @@ public class NewClientUI extends JPanel {
         JPanel pan = new JPanel();
         pan.setLayout(new GridBagLayout());
 
+
         JLabel lClient = new JLabel("Client");
         lClient.setFont(new Font ("Serif", Font.PLAIN, 20));
         pan.add(lClient, new GridBagConstraints(1, 0, 1, 1,0, 0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,0,20,0), 50,0));
@@ -59,9 +61,18 @@ public class NewClientUI extends JPanel {
         phoneNumber.setColumns(10);
         pan.add(phoneNumber, new GridBagConstraints(1, 3, 1, 1,0, 0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,0,0,220), 0,0));
 
-        JButton addCllient = new JButton("Add");
-        pan.add(addCllient, new GridBagConstraints(1, 4,1,1,0,0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,250,0,0), 0,0));
+        JButton cancel = new JButton("Cancel");
+        pan.add(cancel, new GridBagConstraints(1, 4,1,1,0,0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,120,0,0), 0,0));
 
+        JButton addCllient = new JButton("Add");
+        pan.add(addCllient, new GridBagConstraints(2, 4,1,1,0,0, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(0,-60,0,0), 0,0));
+
+        cancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
         addCllient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,7 +82,7 @@ public class NewClientUI extends JPanel {
                 c.setPhoneNumber(phoneNumber.getText());
 
                 shop.addToClientBase(c);
-                shop.createClientBase();
+//                shop.createClientBase();
 
                 new ShopWindow(shop);
 

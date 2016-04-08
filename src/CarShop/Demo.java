@@ -13,7 +13,7 @@ public class Demo {
 //        SplashScreen splash = SplashScreen.getSplashScreen();
 //        Thread.sleep(5000);
 //        splash.close();
-//        Controller carController = new CarController();
+//        DB_Connection carController = new SQL_Connection();
         Shop shop = new Shop();
 
 //        Reports reports = new Reports();

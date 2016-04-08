@@ -1,27 +1,24 @@
 package CarShop.db;
 
-import CarShop.*;
-import CarShop.model.*;
 
+import CarShop.Color;
+import CarShop.model.*;
 import java.sql.*;
-import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarController implements Controller {
+public class DerbyConnection implements DB_Connection {
 
-    private final String URL = "jdbc:mysql://localhost:3306/shop?useSSL=false";
-    private final String USER_NAME = "root";
-    private final String PASSWORD = "Mashar2004";
-    Connection con=null;
 
-    public CarController () {
+    public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+    public static final String URL = "jdbc:derby:shop;create=true";
 
-    }
-
+       Connection con = null;
     private void openConnnection () {
         try {
-            con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+            Class.forName(DRIVER);
+
+            con = DriverManager.getConnection(URL);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -30,7 +27,7 @@ public class CarController implements Controller {
 
     @Override
     public List<Car> uploadCars() {
-         List<Car> cars = new ArrayList<>();
+        List<Car> cars = new ArrayList<>();
         openConnnection();
 
         try {
@@ -72,7 +69,7 @@ public class CarController implements Controller {
             ResultSet rst = st.executeQuery(sql);
 
             while (rst.next()) {
-               Client client = new Client();
+                Client client = new Client();
                 client.setId(rst.getInt(1));
                 client.setFullName(rst.getString(2));
                 client.setPhoneNumber(rst.getString(3));
@@ -93,7 +90,7 @@ public class CarController implements Controller {
 
     @Override
     public void addCar(Car car) {
-         openConnnection();
+        openConnnection();
         try {
             String sql = "insert into car (manufacturer, model, engine_kind, color, price, count) " +
                     "values (?,?,?,?,?,?)";
@@ -210,7 +207,7 @@ public class CarController implements Controller {
     private Client getClientByID(List<Client> clients, ResultSet result) throws SQLException {
         for (Client client : clients) {
             if (client.getId()==result.getInt(3)) {
-               return client;
+                return client;
             }
         }return null;
     }
@@ -218,7 +215,7 @@ public class CarController implements Controller {
     private Car getCarByID(List<Car> cars, ResultSet result) throws SQLException {
         for (Car car: cars) {
             if (car.getCarID()==result.getInt(2)) {
-               return car;
+                return car;
             }
         } return null;
     }
@@ -231,4 +228,5 @@ public class CarController implements Controller {
             ex.printStackTrace();
         }
     }
+
 }

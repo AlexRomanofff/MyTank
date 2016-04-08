@@ -1,9 +1,8 @@
 package CarShop;
 
-import CarShop.db.CarController;
-import CarShop.db.Controller;
+import CarShop.db.DB_Connection;
+import CarShop.db.DerbyConnection;
 import CarShop.model.*;
-
 import java.util.*;
 import java.sql.Date;
 
@@ -12,12 +11,12 @@ public class Shop {
     private List<Car> cars;
     private List<Client> clients;
     private List<Sell>  sales;
-    private Reports reports;
 
-    private Controller controller = new CarController();
 
-    public Controller getController() {
-        return controller;
+    private DB_Connection dbConnection = new DerbyConnection();
+
+    public DB_Connection getDbConnection() {
+        return dbConnection;
     }
 
     public List<Car> getCars() {
@@ -43,8 +42,10 @@ public class Shop {
        sales = new ArrayList<>();
        clients = new ArrayList<>();
        createClientBase();
-       sales = controller.uploadSells();
+       createStorage();
+       sales = dbConnection.uploadSells();
        System.out.println(sales.size());
+
 
    }
 
@@ -59,8 +60,6 @@ public class Shop {
     return car;
     }
 
-//    public List<Sell>
-
     public void addToStorage(Car car, int count) {
         if (changeCountAuto(car, count) == 1) {
             return;
@@ -71,7 +70,7 @@ public class Shop {
     }
     public void createStorage () {
 
-       cars = controller.uploadCars();
+       cars = dbConnection.uploadCars();
        cars.sort(new Comparator<Car>() {
             @Override
             public int compare(Car o1, Car o2) {
@@ -91,14 +90,12 @@ public class Shop {
 
     public void addToClientBase (Client client) {
         clients.add(client);
-        controller.addClient(client);
+        dbConnection.addClient(client);
     }
 
     public void createClientBase () {
-//        addToClientBase(initClient("Ivanov Illya", "Kyiv, Nagornaya str.34", "493 34 23"));
-//        addToClientBase(initClient("Shevchenko Oleksii", "Kyiv, Artema str.11, f.54", "563 34 23"));
-//        addToClientBase(initClient("Zaharova Elena", "Lviv, Svobody str.24", "112 87 88"));
-       clients = controller.uploadClients();
+
+       clients = dbConnection.uploadClients();
     }
 
     public void sellAuto (Car car, Client client) {
@@ -117,7 +114,7 @@ public class Shop {
 
                if (car.getCarID() == cars.get(i).getCarID()) {
                    cars.get(i).setCount(cars.get(i).getCount()+count);
-                   controller.changeCarCount(car, cars.get(i).getCount());
+                   dbConnection.changeCarCount(car, cars.get(i).getCount());
                   return 1;
 
             }
@@ -125,8 +122,8 @@ public class Shop {
     }
 
     private void addNewSell(Sell sell) {
-           sales.add(sell);
-          controller.addSell(sell);
+          sales.add(sell);
+          dbConnection.addSell(sell);
     }
 
     public Client findClient(String fullName) {
@@ -140,27 +137,17 @@ public class Shop {
         } return null;
     }
 
-//    public Car findCar(Manufacturer man, String model) {
-//        Car car = new Car();
-//        for (int i=0; i<cars.size(); i++) {
-//            if (man == cars.get(i).getManufacturer()&& cars.get(i).getModel()==model) {
-//               car = cars.get(i);
-//                break;
-//            }
-//        }
-//        return car;
-//    }
+
 
     public void addNewCar (Car car) {
         cars.add(car);
-        controller.addCar(car);
+        dbConnection.addCar(car);
     }
 
     public List<Sell> getSalesByData (Date date) {
         List<Sell> sells = new ArrayList<>();
-        System.out.println(date);
+
         for (Sell sell: sales) {
-            System.out.println(sell.getData());
             if (sell.getData().equals(date)) {
                 sells.add(sell);
             }

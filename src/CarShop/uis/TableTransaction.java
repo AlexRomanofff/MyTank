@@ -107,20 +107,23 @@ public class TableTransaction extends JPanel {
         pan.setLayout(new GridBagLayout());
 
         Object [] dataColumns = {"TID", "Data","Customer", "Car", "Price"};
-        Object [][] data = new Object[30][5];
+        Object [][] data = new Object[shop.getSales().size()+2][5];
 
         fillTable(data, sells);
         JTable table = new JTable(data, dataColumns);
+
         table.setSelectionForeground(Color.RED);
+        table.setSelectionBackground(Color.CYAN);
+
         table.setShowGrid(false);
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(false);
-
-        table.getColumnModel().getColumn(1).setPreferredWidth(100);
-        table.getColumnModel().getColumn(2).setPreferredWidth(140);
+        table.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(80);
+        table.getColumnModel().getColumn(2).setPreferredWidth(180);
         table.getColumnModel().getColumn(3).setPreferredWidth(150);
-        table.getColumnModel().getColumn(4).setPreferredWidth(100);
-
+//        table.getColumnModel().getColumn(4).setPreferredWidth(100);
         table.setPreferredScrollableViewportSize(new Dimension(500, 270));
         table.setFillsViewportHeight(true);
 
@@ -128,28 +131,31 @@ public class TableTransaction extends JPanel {
         return pan;
     }
 
-    public void fillTable(Object[][] data, List<Sell> sells) {
+    private void fillTable(Object[][] data, List<Sell> sells) {
         int i = 0;
         Locale loc = new Locale("English");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy",loc);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy",loc);
+        double price=0;
         for (Sell s : sells) {
-
+                double priceCar = s.getCar().getPrice()-shop.setDiscount(s.getCar().getPrice())*s.getCar().getPrice();
                 data[i][0] = i+1;
                 data[i][1] = sdf.format(s.getData());
                 data[i][2] = s.getClient().getFullName();
                 data[i][3] = s.getCar().getManufacturer() + " " + s.getCar().getModel();
-                data[i][4] = s.getCar().getPrice()+"$";
+                data[i][4] = (priceCar+"$");
+                price = price + priceCar;
                 i++;
-
         }
+               data[i+1][2] = "Total Income";
+               data[i+1][4] = price+"$";
+
     }
     private JPanel priceList () {
         JPanel pan = new JPanel();
         pan.setLayout(new GridBagLayout());
 
         Object [] dataColumns = {"Car", "Engine", "Price"};
-        Object [][] data = new Object[20][3];
+        Object [][] data = new Object[100][3];
         shop.createStorage();
         int i=0;
         for(Car car: shop.getCars()) {
@@ -162,6 +168,7 @@ public class TableTransaction extends JPanel {
         JTable table = new JTable(data, dataColumns);
         table.setSelectionForeground(Color.RED);
         table.setShowGrid(false);
+        table.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(false);
 

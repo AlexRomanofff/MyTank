@@ -6,7 +6,7 @@ import CarShop.model.Sell;
 
 import java.util.List;
 
-public interface Controller {
+public interface DB_Connection {
 
     void addCar(Car car);
 

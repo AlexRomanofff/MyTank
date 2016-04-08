@@ -23,7 +23,7 @@ public class ShopWindow extends JPanel {
     public ShopWindow(Shop shop) {
         this.shop = shop;
         this.frame = new JFrame("Shop");
-        frame.setMinimumSize(new Dimension(800, 600));
+        frame.setMinimumSize(new Dimension(700, 500));
         frame.setLocation(300,100);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -42,7 +42,7 @@ public class ShopWindow extends JPanel {
         lCustomer.setFont(labelFont);
         JComboBox<String> tClient = new JComboBox<>();
 
-            tClient.addItem("(New Client)");
+        tClient.addItem("New Client");
         for (Client client: shop.getClients()) {
             tClient.addItem(client.getFullName());
         }
@@ -108,7 +108,7 @@ public class ShopWindow extends JPanel {
         buy.setFont(labelFont);
         pan.add(buy, new GridBagConstraints(3, 5, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(30,0,0,0), 0,0));
 
-        JButton returns = new JButton("Cancel");
+        JButton returns = new JButton("Back");
         returns.setFont(labelFont);
         pan.add(returns, new GridBagConstraints(0, 5, 1, 1, 0, 0,GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(30,0,0,0), 0,0));
 
