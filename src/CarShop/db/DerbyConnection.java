@@ -11,6 +11,7 @@ public class DerbyConnection implements DB_Connection {
 
 
     public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+
     public static final String URL = "jdbc:derby:shop;create=true";
 
        Connection con = null;
